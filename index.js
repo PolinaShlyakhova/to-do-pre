@@ -11,8 +11,15 @@ const listElement = document.querySelector(".to-do__list");
 const formElement = document.querySelector(".to-do__form");
 const inputElement = document.querySelector(".to-do__input");
 
+// Отображение текущих задач
+
 function loadTasks() {
-	return items;
+	const tasks = localStorage.getItem('tasks');
+	if (tasks) {
+		return JSON.parse(tasks);
+	} else {
+		return items;
+	}
 }
 
 function createItem(item) {
@@ -25,18 +32,35 @@ function createItem(item) {
 
 	textElement.textContent = item;
 	return clone;
-
-}
-
-function getTasksFromDOM() {
-
-}
-
-function saveTasks(tasks) {
-
 }
 
 items = loadTasks();
 items.forEach(function(item) {
 	listElement.append(createItem(item));
 });
+
+// Создание и сохранение задач
+
+formElement.addEventListener('submit', function(evt) {
+	evt.preventDefault();
+	const item = inputElement.value;
+	listElement.prepend(createItem(item));
+	items = getTasksFromDOM();
+	saveTasks(items);
+	inputElement.value = '';
+})
+
+function getTasksFromDOM() {
+	const itemsNamesElements = document.querySelectorAll('.to-do__item-text');
+	const tasks = [];
+
+	itemsNamesElements.forEach(function(item) {
+		tasks.push(item.textContent);
+	});
+
+	return tasks;
+}
+
+function saveTasks(tasks) {
+	localStorage.setItem('tasks', JSON.stringify(tasks));
+}
