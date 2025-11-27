@@ -31,6 +31,13 @@ function createItem(item) {
   	const editButton = clone.querySelector(".to-do__item-button_type_edit");
 
 	textElement.textContent = item;
+
+	deleteButton.addEventListener('click', function() {
+		clone.remove();
+		const items = getTasksFromDOM();
+		localStorage.setItem('tasks', saveTasks(items));
+	})
+
 	return clone;
 }
 
