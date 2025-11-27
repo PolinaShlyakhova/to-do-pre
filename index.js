@@ -15,7 +15,7 @@ const inputElement = document.querySelector(".to-do__input");
 
 function loadTasks() {
 	const tasks = localStorage.getItem('tasks');
-	if (tasks) {
+	if (tasks && tasks !== 'undefined' && tasks !== 'null' && tasks.trim() !== '') {
 		return JSON.parse(tasks);
 	} else {
 		return items;
@@ -37,6 +37,14 @@ function createItem(item) {
 		const items = getTasksFromDOM();
 		localStorage.setItem('tasks', saveTasks(items));
 	})
+
+	duplicateButton.addEventListener('click', function() {
+		const itemName = textElement.textContent;
+		const newItem = createItem(item);
+		listElement.prepend(newItem);
+		const items = getTasksFromDOM();
+		localStorage.setItem('tasks', saveTasks(items));
+	});
 
 	return clone;
 }
