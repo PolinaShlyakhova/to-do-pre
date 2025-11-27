@@ -35,15 +35,25 @@ function createItem(item) {
 	deleteButton.addEventListener('click', function() {
 		clone.remove();
 		const items = getTasksFromDOM();
-		localStorage.setItem('tasks', saveTasks(items));
-	})
+		saveTasks(items);
+	});
 
 	duplicateButton.addEventListener('click', function() {
-		const itemName = textElement.textContent;
 		const newItem = createItem(item);
 		listElement.prepend(newItem);
 		const items = getTasksFromDOM();
-		localStorage.setItem('tasks', saveTasks(items));
+		saveTasks(items);
+	});
+
+	editButton.addEventListener('click', function() {
+		textElement.setAttribute('contenteditable', 'true');
+		textElement.focus();
+	});
+
+	textElement.addEventListener('blur', function() {
+		textElement.setAttribute('contenteditable', 'false');
+		const items = getTasksFromDOM();
+		saveTasks(items);
 	});
 
 	return clone;
